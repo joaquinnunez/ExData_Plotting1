@@ -1,19 +1,8 @@
 library(lubridate)
 library(dplyr)
 
-# getting the data if is not present
+# assuming that you already have the data from plot1.R
 dataset <- "household_power_consumption.txt"
-if (!file.exists(dataset)) {
-  print("Dataset is not present")
-  zip.filename <- "household_power_consumption.zip"
-  if (!file.exists(zip.filename)) {
-    print("Zip file is not present, downloading...")
-    url <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
-    download.file(url, zip.filename, method = "curl")
-  }
-  print("Unzipping file...")
-  unzip(zip.filename)
-}
 
 # The dataset has 2,075,259 rows and 9 columns.
 # We will only be using data from the dates 2007-02-01 and 2007-02-02.
@@ -24,10 +13,12 @@ nrows <- 2880
 headers <- read.csv(dataset, sep = ";", header = FALSE, nrows = 1, stringsAsFactors=FALSE)
 data <- read.csv(dataset, header = FALSE, sep = ";", skip = skip, nrows = nrows, na.strings = c("?"))
 names(data) <- as.character(as.vector(headers[1,]))
+
 data <- data %>%
 	mutate(Datetime = dmy_hms(paste(Date, Time))) %>%
 	select(Datetime, Global_active_power)
 
-png(filename = "plot1.png", bg = 'transparent')
-hist(data$Global_active_power, main = "Global Active Power", xlab = "Global Active Power (kilowatts)", col = "red")
+png(filename = "plot2.png", bg = 'transparent')
+plot(data, ylab = "Global Active Power (kilowatts)", pch = NA, xlab = "")
+lines(data$Datetime, data$Global_active_power)
 dev.off()
