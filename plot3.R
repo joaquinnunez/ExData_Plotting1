@@ -16,8 +16,12 @@ names(data) <- as.character(as.vector(headers[1,]))
 
 data <- data %>%
 	mutate(Datetime = dmy_hms(paste(Date, Time))) %>%
-	select(Datetime, Global_active_power)
+	select(Datetime, Sub_metering_1, Sub_metering_2, Sub_metering_3)
 
-png(filename = "plot2.png", bg = "transparent")
-plot(data, type = "l", ylab = "Global Active Power (kilowatts)", xlab = "")
+png(filename = "plot3.png", bg = "transparent")
+plot(data$Datetime, data$Sub_metering_1, type = "n", xlab = "", ylab = "Energy sub metering")
+lines(data$Datetime, data$Sub_metering_1)
+lines(data$Datetime, data$Sub_metering_2, col = "red")
+lines(data$Datetime, data$Sub_metering_3, col = "blue")
+legend("topright", c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), lty = c(1, 1, 1), col = c("black", "red", "blue"))
 dev.off()

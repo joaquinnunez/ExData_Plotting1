@@ -28,6 +28,6 @@ data <- data %>%
 	mutate(Datetime = dmy_hms(paste(Date, Time))) %>%
 	select(Datetime, Global_active_power)
 
-png(filename = "plot1.png", bg = 'transparent')
+png(filename = "plot1.png", bg = "transparent")
 hist(data$Global_active_power, main = "Global Active Power", xlab = "Global Active Power (kilowatts)", col = "red")
 dev.off()
